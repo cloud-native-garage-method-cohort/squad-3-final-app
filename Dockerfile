@@ -1,17 +1,9 @@
-# build environment
-FROM node:13.12.0-alpine as build
+FROM quay.io/upslopeio/node-alpine as build
 WORKDIR /app
-ENV PATH /app/node_modules/.bin:$PATH
-COPY package.json ./
-COPY package-lock.json ./
-RUN npm ci --silent
-RUN npm install react-scripts@4.0.3 -g --silent
-COPY . ./
+COPY . .
+RUN npm install
 RUN npm run build
 
-# production environment
-FROM ubi8/nginx-118:1-46
+FROM quay.io/upslopeio/nginx-unprivileged
 COPY --from=build /app/build /usr/share/nginx/html
-COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+COPY --from=build /app/nginx/nginx.conf /etc/nginx/conf.d/default.conf
