@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: express-sample-app
+  name: squad-3-app
 spec:
   type: ClusterIP
   selector:
