@@ -38,6 +38,7 @@ class EmployeeForm extends React.Component {
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
+        <div> Add new employee </div>
         <label>
           First name:
           <input
