@@ -41,3 +41,14 @@ spec:
           # - name: git-credentials
           #   secret:
           #     secretName: git-credentials
+          - name: gitops-repository
+            volumeClaimTemplate:
+              spec:
+                resources:
+                  requests:
+                    storage: 1Gi
+                accessModes:
+                - ReadWriteOnce
+          - name: git-credentials
+            secret:
+              secretName: git-credentials
