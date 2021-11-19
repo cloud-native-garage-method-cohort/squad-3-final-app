@@ -5,8 +5,8 @@ metadata:
 spec:
   workspaces:
     - name: pipeline-ws1
-    # - name: gitops-repository
-    # - name: git-credentials
+    - name: gitops-repository
+    - name: git-credentials
   params:
     - name: source-repo
       type: string
@@ -20,6 +20,7 @@ spec:
     - name: git-clone
       taskRef:
         name: git-clone
+        kind: ClusterTask
       params:
         - name: url
           value: "$(params.source-repo)"
@@ -44,6 +45,7 @@ spec:
     - name: build
       taskRef:
         name: buildah
+        kind: ClusterTask
       params:
         - name: IMAGE
           value: "$(params.image-repo)"
@@ -82,22 +84,22 @@ spec:
           workspace: pipeline-ws1
       runAfter:
         - create-manifests
-    # - name: save-configuration
-    #   params:
-    #     - name: manifest
-    #       value: "$(tasks.create-manifests.results.manifest)"
-    #     - name: app-name
-    #       value: "$(params.app-name)"
-    #     - name: sha
-    #       value: "$(tasks.git-clone.results.commit)"
-    #   runAfter:
-    #     - deploy
-    #   taskRef:
-    #     name: save-configuration
-    #   workspaces:
-    #     - name: source
-    #       workspace: pipeline-ws1
-    #     - name: target
-    #       workspace: gitops-repository
-    #     - name: git-credentials
-    #       workspace: git-credentials
+    - name: save-configuration
+      params:
+        - name: manifest
+          value: "$(tasks.create-manifests.results.manifest)"
+        - name: app-name
+          value: "$(params.app-name)"
+        - name: sha
+          value: "$(tasks.git-clone.results.commit)"
+      runAfter:
+        - deploy
+      taskRef:
+        name: save-configuration
+      workspaces:
+        - name: source
+          workspace: pipeline-ws1
+        - name: target
+          workspace: gitops-repository
+        - name: git-credentials
+          workspace: git-credentials
