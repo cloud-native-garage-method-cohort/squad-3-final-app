@@ -24,11 +24,15 @@ class EmployeeForm extends React.Component {
     this.setState({ email: event.target.value });
   }
   handleSubmit(event) {
-    //alert('Podano następujące imię: ' + this.state.value);
-    console.log("Created", this.state);
-    // if(this.state.firstName )
-    this.props.onFormSubmit(this.state);
+    // add fetch
     event.preventDefault();
+    this.props.onFormSubmit(this.state);
+    let initState = {
+      firstName: "",
+      lastName: "",
+      email: "",
+    };
+    this.setState(initState);
   }
 
   render() {
