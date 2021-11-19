@@ -8,7 +8,7 @@ class EmployeesList extends React.Component {
     const employees = this.props.employees;
     return (
       <div className="container">
-        <h3 className="p-3 text-center">React - Display a list of items</h3>
+        <h3 className="p-3 text-center">Employees</h3>
         <table className="table table-striped table-bordered">
           <thead>
             <tr>
