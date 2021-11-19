@@ -1,21 +1,43 @@
 import React from "react";
 import EmployeeForm from "./EmployeeForm";
 import EmployeesList from "./EmployeesList";
+import axios from "axios";
+
+const url = "/api/employees"
 class AppComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      employees: this.props.employees,
+      employees: [],
     };
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
+  componentDidMount() {
+    this.getEmployees();
+  }
+  getEmployees() {
+    axios
+      .get(url)
+      .then((response) => this.setState({ employees: response.data.employees }))
+      .catch((error) => {
+        alert(error.message);
+      });
+  }
+  createEmployee(newEmployee) {
+    axios
+      .post(url, newEmployee)
+      .then((response) => {
+
+        let employees = this.state.employees;
+        employees.push(newEmployee);
+        this.setState({ employees: employees });
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
+  }
   handleFormSubmit(form) {
-    let employees = this.state.employees;
-    let lastId = employees[employees.length - 1].id;
-    let newEmployee = form;
-    newEmployee.id = lastId + 1;
-    employees.push(newEmployee);
-    this.setState({ employees: employees });
+    this.createEmployee(form);
   }
   render() {
     return (
